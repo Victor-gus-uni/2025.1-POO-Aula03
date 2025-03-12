@@ -17,6 +17,7 @@ public class Televisao
         }
         Tamanho = tamanho;
         Volume = VOLUME_PADRAO;
+        Canal = CANAL_PADRAO;
     }
 
     //Optamos pela utilização da constante para tornar o código mais legível.
@@ -25,8 +26,12 @@ public class Televisao
     private const int VOLUME_MAXIMO = 12;
     private const int VOLUME_MINIMO = 0;
     private const int VOLUME_PADRAO = 10;
-
+    private const int CANAL_MINIMO = 300;
+    private const int CANAL_MAXIMO = 600;
+    private const int CANAL_PADRAO = 500;
     private int _ultimoVolume = VOLUME_PADRAO;
+
+    
 
 
 
@@ -45,10 +50,11 @@ public class Televisao
     public int Volume { get; private set; }
     public int Canal { get; set; }
     public bool Estado { get; set; }
+    public bool ModoMudo {get; private set;}
 
     public void AumentarVolume()
     {
-        if (Volume < VOLUME_MAXIMO)
+        if (!ModoMudo && Volume < VOLUME_MAXIMO)
         {
             Volume++;
             _ultimoVolume = Volume;
@@ -61,7 +67,7 @@ public class Televisao
 
     public void DiminuirVolume()
     {
-        if (Volume > VOLUME_MINIMO)
+        if (!ModoMudo && Volume > VOLUME_MINIMO)
         {
             Volume--;
             _ultimoVolume = Volume;
@@ -76,16 +82,59 @@ public class Televisao
     //Volume = x; Volume = 0; Volume = x;
     public void AlternarModoMudo()
     {
-        if (Volume > VOLUME_MINIMO)
+        if (!ModoMudo)
         {
             _ultimoVolume = Volume;
             Volume = VOLUME_MINIMO;
             Console.WriteLine("A TV está no modo MUTE.");
+            ModoMudo = true;
         }
         else
         {
             Volume = _ultimoVolume;
             Console.WriteLine($"O volume da TV é: {Volume}.");
+            ModoMudo = false;
         }
     }
+
+    public void AumentarCanal()
+    {
+        if (Canal < CANAL_MAXIMO)
+        {
+            Canal++;
+        }
+        else
+        {
+            Console.WriteLine("A TV já está no ultimo canal permitido");
+        }
+
+    }
+    public void DiminuirCanal()
+    {
+        if (Canal > CANAL_MINIMO)
+        {
+            Canal--;
+        }
+        else
+        {
+            Console.WriteLine("A TV já está no primeiro canal permitido");
+        }
+
+    }
+    public void TrocarCanal(int canalDigitado)
+    {
+        if (canalDigitado < CANAL_MINIMO)
+        {
+            Canal = CANAL_MINIMO;
+        }
+        else if (canalDigitado > CANAL_MAXIMO)
+        {
+            Canal = CANAL_MAXIMO;
+        }
+        else
+        {
+            Canal = canalDigitado;
+        }
+    }
+
 }
